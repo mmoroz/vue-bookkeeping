@@ -1,6 +1,10 @@
 <template>
   <div class="app-main-layout">
 
+    <Navbar/>
+
+    <Sidebar/>
+
     <main class="app-content">
       <div class="app-page">
         <router-view/>
@@ -17,8 +21,11 @@
 </template>
 
 <script>
+import Navbar from "@/components/ui/Navbar";
+import Sidebar from "@/components/ui/Sidebar";
 export default {
-  name: "MainLayout"
+  name: "MainLayout",
+  components: {Navbar, Sidebar}
 }
 </script>
 

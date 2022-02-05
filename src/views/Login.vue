@@ -25,7 +25,7 @@
     <div class="card-action">
       <div>
         <button
-            class="btn waves-effect waves-light auth-submit"
+            class="btn waves-effect waves-light auth-submit blue darken-1"
             type="submit"
         >
           Войти
@@ -48,6 +48,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.card{
+  .card-title{
+    font-weight: 500;
+  }
+}
 </style>
