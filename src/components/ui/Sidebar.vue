@@ -1,6 +1,9 @@
 <template>
 
-    <ul class="sidenav app-sidenav open">
+    <ul class="sidenav app-sidenav" :class="{open: isOp}">
+      <li>
+        <router-link exact to="/" class="waves-effect waves-orange pointer">Счет</router-link>
+      </li>
       <li>
         <router-link to="/profile" class="waves-effect waves-orange pointer">Профиль</router-link>
       </li>
@@ -23,7 +26,8 @@
 
 <script>
 export default {
-  name: "Sidebar"
+  name: "Sidebar",
+  props:['isOp']
 }
 </script>
 
