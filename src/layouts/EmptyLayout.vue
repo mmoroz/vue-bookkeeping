@@ -5,7 +5,22 @@
 </template>
 
 <script>
+import messages from "@/utils/messages";
 export default {
-  name: "EmptyLayout"
+  name: "EmptyLayout",
+  computed:{
+    error(){
+      return this.$store.getters.error
+    }
+  },
+  watch:{
+    error(fbError){
+      if(messages[fbError.code]){
+        this.$error(messages[fbError.code])
+      }else{
+        this.$error(fbError.code)
+      }
+    }
+  }
 }
 </script>
