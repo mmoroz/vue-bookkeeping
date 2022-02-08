@@ -16,7 +16,7 @@
               data-target="dropdown"
               ref="dropdown"
           >
-            USER NAME
+            {{ name }}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -52,7 +52,12 @@ export default {
       this.date = new Date()
     }, 1000)
     const elem = this.$refs.dropdown
-    this.dropdown = M.Dropdown.init(elem, {constrainWidth:true})
+    this.dropdown = M.Dropdown.init(elem, {constrainWidth:false})
+  },
+  computed:{
+    name(){
+      return this.$store.getters.info.name
+    }
   },
   methods:{
     async logout(){

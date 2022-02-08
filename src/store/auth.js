@@ -1,14 +1,33 @@
-import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
+const TOKEN_KEY = 'jwt-token'
+
 export default {
+  state(){
+    return {
+      token: localStorage.getItem(TOKEN_KEY)
+    }
+  },
+  mutations:{
+    setToken(state, token){
+      state.token = token
+      localStorage.setItem(TOKEN_KEY,token)
+    },
+    logout(state){
+      state.token = null
+      localStorage.removeItem(TOKEN_KEY)
+    }
+  },
   actions: {
+
     async login({dispatch, commit}, {email, password}){
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          commit('setToken', user.accessToken)
           //console.log(user)
         })
         .catch((error) => {
@@ -17,9 +36,16 @@ export default {
         });
     },
 
-    async logout() {
+    async logout({commit}) {
       const auth = getAuth();
       await signOut(auth)
+      await commit('clearInfo')
+      commit('logout')
+    },
+
+    getUid(){
+      const auth = getAuth();
+      return auth.currentUser ? auth.currentUser.uid : null
     },
 
     async register({commit},{email, password, name}){
@@ -43,5 +69,13 @@ export default {
         });
     },
 
+  },
+  getters:{
+    token(state){
+      return state.token
+    },
+    isAuthenticated(state){
+      return !!state.token
+    }
   }
 }

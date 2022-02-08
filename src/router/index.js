@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import 'materialize-css/dist/js/materialize.min'
+import store from "@/store";
 
 Vue.use(VueRouter)
 
@@ -11,7 +12,8 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
   {
@@ -35,7 +37,8 @@ const routes = [
     name: 'Categories',
     component: () => import('@/views/Categories'),
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
   {
@@ -43,7 +46,8 @@ const routes = [
     name: 'DetailRecord',
     component: () => import('@/views/DetailRecord'),
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
   {
@@ -51,7 +55,8 @@ const routes = [
     name: 'History',
     component: () => import('@/views/History'),
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
   {
@@ -59,7 +64,8 @@ const routes = [
     name: 'Planning',
     component: () => import('@/views/Planning'),
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
   {
@@ -67,7 +73,8 @@ const routes = [
     name: 'Profile',
     component: () => import('@/views/Profile'),
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
   {
@@ -75,7 +82,8 @@ const routes = [
     name: 'Record',
     component: () => import('@/views/Record'),
     meta: {
-      layout: 'main'
+      layout: 'main',
+      auth: true
     }
   },
 
@@ -87,6 +95,17 @@ const router = new VueRouter({
   routes,
   linkActiveClass: 'active',
   linkExactActiveClass: 'active'
+})
+
+router.beforeEach((to, from, next) => {
+  const currentUser = store.getters.isAuthenticated
+  const requireAuth = to.matched.some(record => record.meta.auth)
+
+  if (requireAuth && !currentUser) {
+    next('/login?message=login')
+  } else {
+    next()
+  }
 })
 
 export default router
