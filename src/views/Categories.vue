@@ -4,88 +4,46 @@
       <h3>Категории</h3>
     </div>
     <section>
-      <div class="row">
-        <div class="col s12 m6">
-          <div>
-            <div class="page-subtitle">
-              <h4>Создать</h4>
-            </div>
+      <Loader v-if="loading"/>
+      <div v-else class="row">
 
-            <form>
-              <div class="input-field">
-                <input
-                    id="name"
-                    type="text"
-                >
-                <label for="name">Название</label>
-                <span class="helper-text invalid">Введите название</span>
-              </div>
+        <CategoryCreate @created="addNewCategory"/>
 
-              <div class="input-field">
-                <input
-                    id="limit"
-                    type="number"
-                >
-                <label for="limit">Лимит</label>
-                <span class="helper-text invalid">Минимальная величина</span>
-              </div>
+        <CategoryEdit v-if="categories.length" :key="categories.length + updateCount" :categories="categories" @updated="updateCategories"/>
 
-              <button class="btn waves-effect waves-light blue darken-1" type="submit">
-                Создать
-                <i class="material-icons right">send</i>
-              </button>
-            </form>
-          </div>
-        </div>
-        <div class="col s12 m6">
-          <div>
-            <div class="page-subtitle">
-              <h4>Редактировать</h4>
-            </div>
-
-            <form>
-              <div class="input-field">
-                <select class="browser-default">
-                  <option value="hhh">Category</option>
-                  <option value="hhh">Category</option>
-                  <option value="hhh">Category</option>
-                  <option value="hhh">Category</option>
-                </select>
-              </div>
-
-              <div class="input-field">
-                <input type="text" id="name2">
-                <label for="name2">Название</label>
-                <span class="helper-text invalid">TITLE</span>
-              </div>
-
-              <div class="input-field">
-                <input
-                    id="limit2"
-                    type="number"
-                >
-                <label for="limit2">Лимит</label>
-                <span class="helper-text invalid">LIMIT</span>
-              </div>
-
-              <button class="waves-effect waves-light btn blue darken-1" type="submit">
-                Обновить
-                <i class="material-icons right">send</i>
-              </button>
-            </form>
-          </div>
-        </div>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import CategoryCreate from "@/components/CategoryCreate";
+import CategoryEdit from "@/components/CategoryEdit";
+import Loader from "@/components/ui/Loader";
 export default {
   name: "Categories",
+  data:()=>({
+    categories:[],
+    loading: true,
+    updateCount: 0
+  }),
+  async mounted() {
+    this.categories = await this.$store.dispatch('fetchCategories')
+    this.loading = false
+  },
+  methods:{
+    addNewCategory(category){
+      this.categories.push(category)
+    },
+    async updateCategories(categoryData){
+      const idx = this.categories.findIndex(c => c.id === categoryData.id)
+      this.categories[idx].title = categoryData.title
+      this.categories[idx].limit = categoryData.limit
+      this.updateCount ++
+    }
+  },
+  components:{
+    CategoryEdit,CategoryCreate
+  }
 }
 </script>
-
-<style scoped>
-
-</style>
