@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, child} from "firebase/database";
+import {getDatabase, ref, get, child, push, set} from "firebase/database";
 export default {
   state:{
     info: {}
@@ -26,6 +26,21 @@ export default {
         console.error(error);
       });
 
+    },
+    async updateInfo({ dispatch, commit, getters }, toUpdate) {
+      try {
+        const uid = await dispatch('getUid')
+        const updateData = { ...getters.info, ...toUpdate }
+        const db = getDatabase();
+        await set(ref(db, `/users/${uid}/info`), updateData).catch((error)=>{
+          commit('setError', error)
+          throw error
+        })
+        commit('setInfo', updateData)
+      } catch (e) {
+        commit('setError', e)
+        throw e
+      }
     },
     async fetchCurrency(){
       const key = process.env.VUE_APP_FIXER

@@ -21,12 +21,12 @@ export default {
   }),
   computed:{
     base(){
-      return this.$store.getters.info.bill / (this.rates['RUB'] / this.rates['EUR'])
+      return (this.$store.getters.info.bill / (this.rates['RUB'] / this.rates['EUR']))
     }
   },
   methods:{
     getCurrency(currency){
-      return Math.floor(this.base * this.rates[currency])
+      return Math.ceil(this.base * this.rates[currency])
     }
   }
 }

@@ -31,11 +31,12 @@ export default {
   async mounted() {
     this.currency = {
       rates:{
-        "RUB":86.411017,
-        "USD":1.14295,
+        "RUB":85.445319,
+        "USD":1.14325,
         "EUR":1,
       }
-    }//await this.$store.dispatch('fetchCurrency')
+    }
+    //this.currency = await this.$store.dispatch('fetchCurrency')
     this.loading = false
   },
   methods:{
@@ -44,8 +45,8 @@ export default {
       setTimeout(()=>{
         this.currency = {
           rates:{
-            "RUB":85.411017,
-            "USD":1.14295,
+            "RUB":85.445319,
+            "USD":1.14325,
             "EUR":1,
           }
         }
