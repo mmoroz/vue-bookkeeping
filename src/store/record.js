@@ -12,6 +12,21 @@ export default {
         throw error
       })
     },
+    async fetchRecords({dispatch, commit}){
+      const uid = await dispatch('getUid')
+      const dbRef = ref(getDatabase());
+      return await get(child(dbRef, `/users/${uid}/records`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const records = snapshot.val()
+          return Object.keys(records).map(key=>({...records[key], id:key}))
+        } else {
+          return {}
+        }
+      }).catch((error) => {
+        commit('setError', error)
+        console.error(error);
+      });
+    },
   }
 
 }

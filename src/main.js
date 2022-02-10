@@ -7,6 +7,7 @@ import store from './store'
 import dateFilter from "@/filters/date.filter";
 import messagePlugin from "@/utils/message.plugin";
 import Loader from "@/components/ui/Loader";
+import tooltipDirective from "@/directives/tooltip.directive";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
@@ -19,6 +20,7 @@ Vue.use(Vuelidate)
 Vue.use(messagePlugin)
 Vue.filter('date', dateFilter)
 Vue.filter('currency', currencyFilter)
+Vue.directive('tooltip', tooltipDirective)
 Vue.component('Loader', Loader)
 
 const firebaseConfig = {

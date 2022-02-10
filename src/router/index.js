@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import 'materialize-css/dist/js/materialize.min'
-import store from "@/store";
+import { getAuth } from "firebase/auth";
 
 Vue.use(VueRouter)
 
@@ -98,7 +98,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = store.getters.isAuthenticated
+  const auth = getAuth();
+  const currentUser = auth.currentUser ? auth.currentUser.uid : null
   const requireAuth = to.matched.some(record => record.meta.auth)
 
   if (requireAuth && !currentUser) {
