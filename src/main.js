@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {Vuelidate} from "vuelidate";
+import Paginate from 'vuejs-paginate'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
@@ -12,6 +13,7 @@ import tooltipDirective from "@/directives/tooltip.directive";
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import currencyFilter from "@/filters/currency.filter";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 
 
@@ -22,6 +24,7 @@ Vue.filter('date', dateFilter)
 Vue.filter('currency', currencyFilter)
 Vue.directive('tooltip', tooltipDirective)
 Vue.component('Loader', Loader)
+Vue.component('Paginate', Paginate)
 
 const firebaseConfig = {
   apiKey: "AIzaSyC8JyNoYkY5jAx5s7VGnJewchA-OME02j0",
@@ -35,8 +38,16 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase(firebaseApp);
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+let app
+
+onAuthStateChanged(getAuth(), (user) => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+});
+
+

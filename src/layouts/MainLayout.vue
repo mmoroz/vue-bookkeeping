@@ -36,17 +36,10 @@ export default {
     loading: true
   }),
   async mounted() {
-    const auth = getAuth();
-    await onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        if(!this.$store.getters.info.bill || !this.$store.getters.info.name) {
-          await this.$store.dispatch('fetchInfo')
-        }
-        this.loading = false
-      } else {
-        await this.$store.dispatch('logout')
-      }
-    });
+    if (!this.$store.getters.info.bill || !this.$store.getters.info.name) {
+      await this.$store.dispatch('fetchInfo')
+    }
+    this.loading = false
   },
   methods:{
 

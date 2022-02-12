@@ -42,7 +42,7 @@ const routes = [
     }
   },
   {
-    path: '/detail-record',
+    path: '/detail/:id',
     name: 'DetailRecord',
     component: () => import('@/views/DetailRecord'),
     meta: {
